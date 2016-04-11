@@ -6,4 +6,4 @@ S3method(plot,jive)
 import("SpatioTemporal","gplots")
 importFrom("graphics", "barplot", "image", "layout", "layout.show",
              "legend", "par", "plot", "plot.new", "text")
-importFrom("stats", "dist", "hclust", "quantile", "sd")
+importFrom("stats", "dist", "hclust", "quantile", "sd","runif")

@@ -11,18 +11,18 @@ Given a list of linked data sets, this algorithm will return low-rank matrices o
 }
 \usage{
 jive(data, rankJ = 1, rankA = rep(1, length(data)), method = "perm",
-      dnames = names(data), conv = 1e-06, maxiter = 1000, scale = TRUE,
-      orthIndiv = TRUE, est = TRUE)
+      dnames = names(data), conv = "default", maxiter = 1000, scale = TRUE,
+      orthIndiv = TRUE, est = TRUE, showProgress=TRUE)
 
 jive.iter(data, rankJ = 1, rankA = rep(1, length(data)), conv = 1e-06,
-           maxiter = 1000, orthIndiv = TRUE)
+           maxiter = 1000, orthIndiv = TRUE, showProgress=TRUE)
 
 jive.perm(data, nperms = 100, alpha = 0.05, est = TRUE, conv = 1e-06, 
-           maxiter = 1000, orthIndiv = TRUE)
+           maxiter = 1000, orthIndiv = TRUE, showProgress=TRUE)
 
 bic.jive(data, n = unlist(lapply(data, ncol)) * unlist(lapply(data, nrow)),
           d = unlist(lapply(data, nrow)), conv = 1e-06, maxiter = 1000,
-          orthIndiv = TRUE)
+          orthIndiv = TRUE, showProgress=TRUE)
 }
 \arguments{
   \item{data}{
@@ -54,6 +54,9 @@ A boolean indicating whether or not the algorithm should enforce orthogonality b
 }
   \item{est}{
 A boolean indicating whether or not the data should first be compressed via singular value decomposition before running the JIVE algorithm;  this will yield identical results, but can improve computational efficiency dramatically for data with more rows than columns.  The default is TRUE.
+}
+  \item{showProgress}{
+A boolean indicating whether or not to give output showing the progress of the algorithm. If TRUE, the algorithm will print out updates about the number of iterations the algorithm is taking and the progress of the rank selection method, if applicable.  If FALSE, the algorithms will give no printed output when run.  
 }
   \item{nperms}{
 A value indicating the number of permutations for rank estimation. Default is 100.
@@ -107,8 +110,9 @@ Results <- jive(SimData)
 summary(Results)
 
 # Using BIC rank selection
-#Here we set maxiter to 50 to speed up this example.  In practice we recommend a higher value,
-#such as the default of 1000.
+#We set the maximum number of iterations allowed to 50 to speed up this example.  
+#In practice we recommend a higher value, such as the default of 1000, 
+#to ensure that all results converge.
 BIC_result <- jive(SimData,method="bic",maxiter=50)  
 summary(BIC_result)}
 }

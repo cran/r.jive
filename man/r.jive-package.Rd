@@ -12,8 +12,8 @@ Performs the JIVE decompositions on a list of data sets when the data share a di
 \tabular{ll}{
 Package: \tab r.jive\cr
 Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab 2015-12-15\cr
+Version: \tab 1.4\cr
+Date: \tab 2016-04-08\cr
 License: \tab GPL-3\cr
 }
 

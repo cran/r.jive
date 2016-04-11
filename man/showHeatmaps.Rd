@@ -21,6 +21,10 @@ Specifies whether to show the full decomposition of the data, JIVE estimates, an
 }
 }
 
+\details{
+The columns correspond to the shared dimension (for example, a common sample set), and the ordering of the columns is the same for all matrices shown. 
+}
+
 \references{
 Lock, E. F., Hoadley, K. A., Marron, J. S., & Nobel, A. B. (2013). Joint and individual variation explained (JIVE) for integrated analysis of multiple data types. The Annals of Applied Statistics, 7(1), 523-542.
 }

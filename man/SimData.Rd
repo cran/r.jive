@@ -5,7 +5,7 @@
 \description{
 These data were simulated as described in Section 2.4 of Lock et al., 2013. There are two simulated sources, with rank 1 joint structure and rank 1 structure individual to each source.      
 }
-\usage{data(BRCA_data)}
+\usage{data(SimData)}
 \format{
  This dataset is a list of two entries:
 \itemize{

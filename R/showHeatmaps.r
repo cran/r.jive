@@ -72,7 +72,7 @@ showHeatmaps <- function(result,order_by=0,show_all=TRUE){
     }
     if(order_by>0){
       layout(matrix(c(3,4,1,2),2,2),heights=c(1,5),widths=c(1,5))
-      layout.show(1+l)
+      layout.show(2+l)
       CEX=textplot("Individual")
       show.image(Image_Indiv[[order_by]])
       textplot(' ')

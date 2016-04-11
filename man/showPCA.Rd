@@ -25,6 +25,11 @@ The colors of the data points in the plot. Can be a vector specifying a differen
 }
 }
 
+\details{
+This shows the patterns in the column space that maximize variability of joint or individual structure, analogous to principal components.  A multi-panel figure with aligned scatterplots for each pair of principal components, across both joint and individual structure, will be generated.  Plotted points correspond to shared columns (e.g., samples).  
+}
+
+
 \references{
 Lock, E. F., Hoadley, K. A., Marron, J. S., & Nobel, A. B. (2013). Joint and individual variation explained (JIVE) for integrated analysis of multiple data types. The Annals of Applied Statistics, 7(1), 523-542.
 }
@@ -43,5 +48,9 @@ data(SimResults)
 # Visualize results
 # Plot the three components, 1 joint and 1 individual from each source
 showPCA(Results,1,c(1,1))
+###This displays three scatterplots: 
+#the first joint principal component vs. the first principal component individual to source 1,
+#the first joint component vs.  the first component individual to source 2, and 
+#the first component individual to source 1 vs. the first component individual to source 2.
 }
 

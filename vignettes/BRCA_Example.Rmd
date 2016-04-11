@@ -5,11 +5,11 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: rjive_bib.bib
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Example with TCGA Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
-This vignette illustrates the usage and capabilities of the **r.jive** package, using publicly available data on breast cancer (BRCA) tumor samples from [The Cancer Genome Atlas](http://cancergenome.nih.gov/). This package implements Joint and Individual Variation Explained (JIVE), a flexible exploratory method for the integrated dimension reduction and visualization of multiple high-throughput data sources measured on the same sample set.  The method was originally described in @Lock, and users should refer therein for details.  Briefly stated, JIVE decomposes a multi-source dataset into three terms: a low-rank approximation capturing joint variation across sources, low-rank approximations for structured
+This vignette illustrates the usage and capabilities of the **r.jive** package, using publicly available data on breast cancer (BRCA) tumor samples from [The Cancer Genome Atlas](http://cancergenome.nih.gov/). This package implements Joint and Individual Variation Explained (JIVE), a flexible exploratory method for the integrated dimension reduction and visualization of multiple high-throughput data sources measured on the same samples set.  The method was originally described in @Lock, and users should refer therein for details.  Breifly stated, JIVE decomposes a multi-source dataset into three terms: a low-rank approximation capturing joint variation across sources, low-rank approximations for structured
 variation individual to each source, and residual noise.  This decomposition can be considered a generalization of Principal Components Analysis (PCA) for multi-source data.
 
 Here we avoid methodological details and simply describe the functionality of the R package with a data example.  
@@ -46,35 +46,40 @@ We estimate the decomposition on the BRCA data with these and other defaults.
 
 ```Results = jive(Data)```
 
-> 88  iterations  
->2 22 14 20 
->
-> 88  iterations  
->2 32 22 24 
->
-> 87  iterations  
->2 32 22 23 
->
-> 87  iterations  
->2 32 22 23 
+> Estimating  joint and individual ranks via permutation...
+Running JIVE algorithm for ranks:
+joint rank: 2 , individual ranks: 21 14 20 
+JIVE algorithm converged after  113  iterations.
+Re-estimating  joint and individual ranks via permutation...
+Running JIVE algorithm for ranks:
+joint rank: 2 , individual ranks: 20 12 19 
+JIVE algorithm converged after  131  iterations.
+Re-estimating  joint and individual ranks via permutation...
+Running JIVE algorithm for ranks:
+joint rank: 2 , individual ranks: 20 12 18 
+JIVE algorithm converged after  113  iterations.
+Re-estimating  joint and individual ranks via permutation...
+Running JIVE algorithm for ranks:
+joint rank: 2 , individual ranks: 20 12 18 
+JIVE algorithm converged after  113  iterations.
 
-The output shown are the ranks used for each call to the base JIVE algorithm (here, 4 calls) and the number of iterations until convergence for each call.  The method ends when the ranks are the same for two consecutive calls. For this example, the chosen ranks are   
+The output gives the ranks used for each call to the base JIVE algorithm (here, 4 calls) and the number of iterations until convergence for each call.  The method ends when the ranks are the same for two consecutive calls. For this example, the chosen ranks are   
 
 * rank 2 joint structure 
-* rank 32 structure individual to gene expression
-* rank 22 structure individual to methylation, and
-* rank 23 structure individual to miRNA.
+* rank 20 structure individual to gene expression
+* rank 12 structure individual to methylation, and
+* rank 18 structure individual to miRNA.
 
 The results are given as an object of the S3 class JIVE, with values including 
 
-* `Results$data`: A list of the three data matrices used for JIVE estimation.  These are centered and scaled versions of the original data matrices (by default, each data matrix is scaled by its total variation).
+* `Results$data`: A list of the three data matrices used for JIVE estimation.  These are centered and scaled version of the original data matrices (by default, each data matrix is scaled by its total variation).
 * `Results$joint`: A list of three data matrices giving estimated joint structure for each source.
 * `Results$indiv`: A list of three data matrices giving estimated individual structure for each source.
 
 Each list is labeled with the names given in the original input data (e.g., `Results$data$Expression` gives the scaled expression data).  These are also used as labels for figures that depict the JIVE results.
 
 To simply estimate the JIVE decomposition with the ranks determined above, enter  
-```Results = jive(Data,method="given",rankJ=2,rankA=c(32,22,23)) ```  
+```Results = jive(Data,method="given",rankJ=2,rankA=c(20,12,18)) ```  
 these results are identical to those obtained after running the method with rank selection.
 
 ## Visualization and interpretation
@@ -88,7 +93,7 @@ showVarExplained(Results)
 dev.off()
 ```
 ![alt text](VarExplained.png)  
-The variation explained by joint structure is similar as that for individual structure for gene expression and methylation data, despite the much higher rank of individual structure (e.g., rank 32 individual vs. rank 2 joint for expression).  The overall decomposition is remarkably similar between the expression and methylation data.  The estimated joint structure explains slightly less variability in the miRNA data, which has more individual structure.  
+The variation explained by joint structure is higher than that for individual structure for methylation data, despite the much higher rank of individual structure (rank 12 individual vs. rank 2 joint for methylation).    The estimated joint structure explains slightly less variability, but still a substantial proportion of variability, in the gene expression and miRNA data.
 
 We can display the actual JIVE estimates, in the form of low-rank matrix approximations, as heatmaps using the `showHeatmaps` function.  By default, this will create heatmaps of the full JIVE decomposition (Data=Joint+Individual+Residual) and order the rows and columns of all matrices by complete linkage clustering of the joint structure.  For larger datasets, performing the clustering and rendering the images can take some time; for these data the process takes less than a minute.  You may need to fiddle with the image dimensions a bit for the results to look nice (if the dimensions are too small, the text may be cut-off).    
 ```
@@ -107,7 +112,7 @@ dev.off()
 ```
 ![alt text](HeatmapIndivMeth.png)
 
-The dominating factor here appears to be a mean effect, distinguishing those samples with relatively high methylation genome-wide from those with relatively low methylation.
+One factor appears to be a mean effect, distinguishing those samples with relatively high methylation genome-wide from those with relatively low methylation.
 
 To further examine the biological relevance of the estimated joint structure, we consider the "point cloud" view provided by the `showPCA` function.  This shows the patterns in the column space that maximize variability of joint or individual structure, analogous to principal components.  Any number of components from the joint or different individual structure estimates can be shown in multi-panel scatterplots. First, we view the two components of joint structure (note: because the joint structure is rank 2, it has only 2 principal components).  We color these components by the clusters defined in the `clusts` variable.
 ```
@@ -128,7 +133,7 @@ showPCA(Results,n_joint=1,n_indiv=c(1,1,1),Colors=Colors)
 dev.off()
 ```
 ![alt text](MorePCA.png)  
-A clustering effect is not apparant in the individual components shown, besides a very slight distinction between clusters 2 and 3 in the expression individual component.  This suggests that the coordinated expression, methylation, and miRNA activity in BRCA tumors is primarily driven by the cluster effects mentioned above, whereas the  activity specific to each data source is driven by other biological components.      
+A clustering effect is not apparant in the individual components shown, besides a slight distinction between clusters 2 and 3 in the expression individual component.  This suggests that the coordinated expression, methylation, and miRNA activity in BRCA tumors is primarily driven by the cluster effects mentioned above, whereas the  activity specific to each data source is driven by other biological components.      
 
 
 ## References
