@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
-This vignette illustrates the usage and capabilities of the **r.jive** package, using publicly available data on breast cancer (BRCA) tumor samples from [The Cancer Genome Atlas](http://cancergenome.nih.gov/). This package implements Joint and Individual Variation Explained (JIVE), a flexible exploratory method for the integrated dimension reduction and visualization of multiple high-throughput data sources measured on the same samples set.  The method was originally described in @Lock, and users should refer therein for details.  Breifly stated, JIVE decomposes a multi-source dataset into three terms: a low-rank approximation capturing joint variation across sources, low-rank approximations for structured
+This vignette illustrates the usage and capabilities of the **r.jive** package, using publicly available data on breast cancer (BRCA) tumor samples from [The Cancer Genome Atlas](http://cancergenome.nih.gov/). This package implements Joint and Individual Variation Explained (JIVE), a flexible exploratory method for the integrated dimension reduction and visualization of multiple high-throughput data sources measured on the same samples set.  The method was originally described in @Lock, and the package is described in @OConnell; users should refer therein for details.  Briefly stated, JIVE decomposes a multi-source dataset into three terms: a low-rank approximation capturing joint variation across sources, low-rank approximations for structured
 variation individual to each source, and residual noise.  This decomposition can be considered a generalization of Principal Components Analysis (PCA) for multi-source data.
 
 Here we avoid methodological details and simply describe the functionality of the R package with a data example.  
@@ -46,22 +46,22 @@ We estimate the decomposition on the BRCA data with these and other defaults.
 
 ```Results = jive(Data)```
 
-> Estimating  joint and individual ranks via permutation...
-Running JIVE algorithm for ranks:
-joint rank: 2 , individual ranks: 21 14 20 
-JIVE algorithm converged after  113  iterations.
-Re-estimating  joint and individual ranks via permutation...
-Running JIVE algorithm for ranks:
-joint rank: 2 , individual ranks: 20 12 19 
-JIVE algorithm converged after  131  iterations.
-Re-estimating  joint and individual ranks via permutation...
-Running JIVE algorithm for ranks:
-joint rank: 2 , individual ranks: 20 12 18 
-JIVE algorithm converged after  113  iterations.
-Re-estimating  joint and individual ranks via permutation...
-Running JIVE algorithm for ranks:
-joint rank: 2 , individual ranks: 20 12 18 
-JIVE algorithm converged after  113  iterations.
+> Estimating  joint and individual ranks via permutation...  
+>Running JIVE algorithm for ranks:  
+>joint rank: 2 , individual ranks: 21 14 20   
+>JIVE algorithm converged after  113  iterations.  
+>Re-estimating  joint and individual ranks via permutation...  
+>Running JIVE algorithm for ranks:  
+>joint rank: 2 , individual ranks: 20 12 19   
+>JIVE algorithm converged after  131  iterations.  
+>Re-estimating  joint and individual ranks via permutation...  
+>Running JIVE algorithm for ranks:  
+>joint rank: 2 , individual ranks: 20 12 18   
+>JIVE algorithm converged after  113  iterations.  
+>Re-estimating  joint and individual ranks via permutation...  
+>Running JIVE algorithm for ranks:  
+>joint rank: 2 , individual ranks: 20 12 18   
+>JIVE algorithm converged after  113  iterations.  
 
 The output gives the ranks used for each call to the base JIVE algorithm (here, 4 calls) and the number of iterations until convergence for each call.  The method ends when the ranks are the same for two consecutive calls. For this example, the chosen ranks are   
 

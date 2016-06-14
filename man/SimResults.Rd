@@ -11,6 +11,8 @@ JIVE results for the simulated data SimData, which were simulated as described i
    
 \references{
 Lock, EF, KA Hoadley, JS Marron, and AB Nobel. 2013. ''Joint and Individual Variation Explained (JIVE) for Integrated Analysis of Multiple Data Types.'' The Annals of Applied Statistics 7 (1): 523-42.
+
+O'Connell, M. J., & Lock, E.F. (2016). R.JIVE for Exploration of Multi-Source Molecular Data. Bioinformatics advance access: 10.1093/bioinformatics/btw324.
 }
 
 \keyword{datasets}

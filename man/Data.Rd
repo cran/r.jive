@@ -20,6 +20,8 @@ The 348 columns are shared by the data sources (here, they correspond to tumor s
 Cancer Genome Atlas Network. 2012. ''Comprehensive Molecular Portraits of Human Breast Tumours.'' Nature 490 (7418): 61-70.
 
 Lock, E.F. and Dunson, D.B. 2013. ''Bayesian Consensus Clustering.'' Bioinformatics 29 (20): 2610-16.
+
+O'Connell, M. J., & Lock, E.F. (2016). R.JIVE for Exploration of Multi-Source Molecular Data. Bioinformatics advance access: 10.1093/bioinformatics/btw324.
 }
 
 \keyword{datasets}
