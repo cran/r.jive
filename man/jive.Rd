@@ -11,7 +11,7 @@ Given a list of linked data sets, this algorithm will return low-rank matrices o
 }
 \usage{
 jive(data, rankJ = 1, rankA = rep(1, length(data)), method = "perm",
-      dnames = names(data), conv = "default", maxiter = 1000, scale = TRUE,
+      dnames = names(data), conv = "default", maxiter = 1000, scale = TRUE, center = TRUE,
       orthIndiv = TRUE, est = TRUE, showProgress=TRUE)
 
 jive.iter(data, rankJ = 1, rankA = rep(1, length(data)), conv = 1e-06,
@@ -47,7 +47,10 @@ A value indicating the convergence criterion.
 The maximum number of iterations for each instance of the JIVE algorithm. 
 }
   \item{scale}{
-A boolean indicating whether or not the data should be scaled.  If TRUE, each data set is mean-centered and divided by its Frobenius norm prior to the JIVE algorithm. Default is TRUE.
+A boolean indicating whether or not the data should be scaled.  If TRUE, each data set is divided by its Frobenius norm prior to the JIVE algorithm. Default is TRUE.
+}
+  \item{center}{
+A boolean indicating whether or not the data should be centered.  If TRUE, the rows of each data set are mean-centered. Default is TRUE.
 }
   \item{orthIndiv}{
 A boolean indicating whether or not the algorithm should enforce orthogonality between individual structures. The default is TRUE.

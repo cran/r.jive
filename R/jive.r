@@ -1,8 +1,8 @@
-jive <- function (data, rankJ=1, rankA=rep(1,length(data)), method="perm", dnames=names(data), conv="default", maxiter=1000, scale=TRUE, orthIndiv=TRUE, est=TRUE, showProgress=TRUE) {
+jive <- function (data, rankJ=1, rankA=rep(1,length(data)), method="perm", dnames=names(data), conv="default", maxiter=1000, scale=TRUE, center=TRUE,orthIndiv=TRUE, est=TRUE, showProgress=TRUE) {
    # Get the number of data sets
   
    l <- length(data)
-
+   
    # Calculate the dimensions of the data (for BIC)
    # n is the total number of values in each reduced individual matrix (=nd[k])
    # d is the number of rows of each dataset
@@ -21,7 +21,7 @@ jive <- function (data, rankJ=1, rankA=rep(1,length(data)), method="perm", dname
 
    # Center and scale individual data sets by frobenius norm
    for (i in 1:l) {
-      data[[i]] <- data[[i]] - matrix(rep(apply(data[[i]],1,mean,na.rm=T),ncol(data[[i]])),nrow=nrow(data[[i]]))
+      if (center) {data[[i]] <- data[[i]] - matrix(rep(apply(data[[i]],1,mean,na.rm=T),ncol(data[[i]])),nrow=nrow(data[[i]]))}
       if (scale) { data[[i]] <- data[[i]] / norm(data[[i]], type="f")*sqrt(sum(n))}
    }
    
@@ -341,19 +341,21 @@ jive.perm <- function (data, nperms=100, alpha=0.05, est=TRUE, conv=0.000001, ma
    }
 
    # Permute columns of joint structure
-   full <- do.call(rbind, data) - do.call(rbind, Aperp)
-   n <- ncol(full)
-   actual <- svdwrapper(full,nu=0,nv=0)$d
+   full <- list()
+   for(i in 1:length(data)){
+    full[[i]] <- data[[i]] - Aperp[[i]]
+   }
+   n <- ncol(full[[1]])
+   actual <- svdwrapper(do.call(rbind,full),nu=0,nv=0)$d
    # Each row of perms will be the singular values of a single permutation
    # The ith column of perms will be the ith singular value from all permutations
    perms <- matrix(NA, nperms, min(n,sum(unlist(lapply(data,nrow)))))
    for (i in 1:nperms) {
       temp <- list()
       for (j in 1:length(data)) {
-         temp[[j]] <- data[[j]][, sample(1:n, n, replace=F)]
+         temp[[j]] <- full[[j]][, sample(1:n, n, replace=F)]
       }
-      full <- do.call(rbind, temp)
-      perms[i,] <- svdwrapper(full,nu=0,nv=0)$d
+      perms[i,] <- svdwrapper(do.call(rbind, temp),nu=0,nv=0)$d
    }
    rankJ <- 0
    for (i in 1:n) {
@@ -374,7 +376,7 @@ jive.perm <- function (data, nperms=100, alpha=0.05, est=TRUE, conv=0.000001, ma
       actual <- svdwrapper(ind,nu=0,nv=0)$d
       perms <- matrix(NA, nperms, min(n,nrow(data[[i]])))
       for (k in 1:nperms) {
-         perm <- t(data[[i]])
+         perm <- t(ind)
          pind <- order(c(col(perm)), runif(length(perm))) 
          perm <- matrix(perm[pind], nrow=nrow(ind), ncol=n, byrow=TRUE)
 
@@ -390,7 +392,8 @@ jive.perm <- function (data, nperms=100, alpha=0.05, est=TRUE, conv=0.000001, ma
          }
       }
    }
-
+   current <- c(rankJ, rankA)
+   if(!isTRUE(all.equal(last, current))){
    dataR <- list()
    if (est) {
       u <- list()
@@ -418,10 +421,11 @@ jive.perm <- function (data, nperms=100, alpha=0.05, est=TRUE, conv=0.000001, ma
          Aperp[[i]] <- u[[i]] %*% Aperp[[i]]
       }
    }
-   current <- c(rankJ, rankA)
+  } 
    nrun <- nrun + 1
   }
   converged <- ifelse(nrun == 10,F,T)
+  if (showProgress) { cat("Final joint rank:", rankJ,", final individual ranks:", rankA, "\n") }
   return(list(data=data, joint=Jperp, individual=Aperp, rankJ=rankJ, rankA=rankA, converged=converged))
 }
 

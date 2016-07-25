@@ -41,7 +41,7 @@ The default function to estimate the JIVE decomposition is `jive`.  This functio
 
 Two algorithms to select the ranks are included as options.  One is a permutation-based approach described in @Lock, the other is a BIC-motivated approach.  We find that the accuracy of permutation estimated ranks are generally better, but BIC is less computationally intensive.  By default the ranks are selected via permutation, with row-orthogonality enforced between the joint and invidual estimates and also between each individual estimate.  Previously orthogonality was only enforced between joint and individual estimates, but we find that also enforcing the individual estimates to be orthogonal to each other improves convergence and robustness of the results to rank mispecification.  
 
-We estimate the decomposition on the BRCA data with these and other defaults.
+We estimate the decomposition on the BRCA data with these and other defaults.  Note that the results below differ slightly from the results described in @OConnell, as the default algorithm has been improved.   
 (This can take some time to complete, about 15 min, to compute the same estimates more quickly with given ranks see below.) 
 
 ```Results = jive(Data)```
@@ -52,23 +52,22 @@ We estimate the decomposition on the BRCA data with these and other defaults.
 >JIVE algorithm converged after  113  iterations.  
 >Re-estimating  joint and individual ranks via permutation...  
 >Running JIVE algorithm for ranks:  
->joint rank: 2 , individual ranks: 20 12 19   
->JIVE algorithm converged after  131  iterations.  
+>joint rank: 2 , individual ranks: 27 25 25  
+>JIVE algorithm converged after  95  iterations.
 >Re-estimating  joint and individual ranks via permutation...  
 >Running JIVE algorithm for ranks:  
->joint rank: 2 , individual ranks: 20 12 18   
->JIVE algorithm converged after  113  iterations.  
+>joint rank: 2 , individual ranks: 27 26 25  
+>JIVE algorithm converged after  98  iterations. 
 >Re-estimating  joint and individual ranks via permutation...  
->Running JIVE algorithm for ranks:  
->joint rank: 2 , individual ranks: 20 12 18   
->JIVE algorithm converged after  113  iterations.  
+>Final joint rank: 2 , final individual ranks: 27 26 25 
+
 
 The output gives the ranks used for each call to the base JIVE algorithm (here, 4 calls) and the number of iterations until convergence for each call.  The method ends when the ranks are the same for two consecutive calls. For this example, the chosen ranks are   
 
 * rank 2 joint structure 
-* rank 20 structure individual to gene expression
-* rank 12 structure individual to methylation, and
-* rank 18 structure individual to miRNA.
+* rank 27 structure individual to gene expression
+* rank 26 structure individual to methylation, and
+* rank 25 structure individual to miRNA.
 
 The results are given as an object of the S3 class JIVE, with values including 
 
@@ -79,7 +78,7 @@ The results are given as an object of the S3 class JIVE, with values including
 Each list is labeled with the names given in the original input data (e.g., `Results$data$Expression` gives the scaled expression data).  These are also used as labels for figures that depict the JIVE results.
 
 To simply estimate the JIVE decomposition with the ranks determined above, enter  
-```Results = jive(Data,method="given",rankJ=2,rankA=c(20,12,18)) ```  
+```Results = jive(Data,method="given",rankJ=2,rankA=c(27,26,25)) ```  
 these results are identical to those obtained after running the method with rank selection.
 
 ## Visualization and interpretation
@@ -93,7 +92,7 @@ showVarExplained(Results)
 dev.off()
 ```
 ![alt text](VarExplained.png)  
-The variation explained by joint structure is higher than that for individual structure for methylation data, despite the much higher rank of individual structure (rank 12 individual vs. rank 2 joint for methylation).    The estimated joint structure explains slightly less variability, but still a substantial proportion of variability, in the gene expression and miRNA data.
+The variation explained by joint structure is higher than that for individual structure for methylation data, despite the much higher rank of individual structure (rank 26 individual vs. rank 2 joint for methylation).    The estimated joint structure explains slightly less variability, but still a substantial proportion of variability, in the gene expression and miRNA data.
 
 We can display the actual JIVE estimates, in the form of low-rank matrix approximations, as heatmaps using the `showHeatmaps` function.  By default, this will create heatmaps of the full JIVE decomposition (Data=Joint+Individual+Residual) and order the rows and columns of all matrices by complete linkage clustering of the joint structure.  For larger datasets, performing the clustering and rendering the images can take some time; for these data the process takes less than a minute.  You may need to fiddle with the image dimensions a bit for the results to look nice (if the dimensions are too small, the text may be cut-off).    
 ```

@@ -7,7 +7,8 @@ Principal Component Plots for JIVE Decomposition
 Display principal component plots of the joint and individual structure of a data set after a JIVE decomposition.
 }
 \usage{
-showPCA(result, n_joint = 0, n_indiv = rep(0, length(result$data)), Colors = "black")
+showPCA(result, n_joint = 0, n_indiv = rep(0, length(result$data)), 
+         Colors = "black", pch=1)
 }
 
 \arguments{
@@ -22,6 +23,9 @@ The vector of the number of individual components to plot for each data set.
 }
   \item{Colors}{
 The colors of the data points in the plot. Can be a vector specifying a different color for each sample.
+}
+ \item{pch}{
+Character to use for plotting.  Can be a vector specifying a different character for each sample.  
 }
 }
 

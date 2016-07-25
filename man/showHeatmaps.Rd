@@ -14,7 +14,7 @@ showHeatmaps(result, order_by = 0, show_all = TRUE)
 An object of class "jive".
 }
   \item{order_by}{
-Specifies how to order the rows and columns of the heatmap.  If order_by=0, orderings are determined by joint structure. Otherwise, order_by gives the number of the individual structure dataset to determine the ordering. In all cases orderings are determined by complete-linkage hiearchichal clustering of Euclidean distances.
+Specifies how to order the rows and columns of the heatmap.  If order_by=-1, the matrices are not re-ordered.  If order_by=0, orderings are determined by joint structure. Otherwise, order_by gives the number of the individual structure dataset to determine the ordering. In all cases orderings are determined by complete-linkage hiearchichal clustering of Euclidean distances.
 }
   \item{show_all}{
 Specifies whether to show the full decomposition of the data, JIVE estimates, and noise.  If show_all=FALSE, only the matrix (or matrices) that determined the column ordering is shown.

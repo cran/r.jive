@@ -10,16 +10,21 @@ showHeatmaps <- function(result,order_by=0,show_all=TRUE){
   l <- length(result$data)
   ####Get row/column orderings
   Mat_ColOrder <- do.call(rbind,result$joint)
-  if(order_by>0) Mat_ColOrder = result$individual[[order_by]]
-  col.dist<-dist(t(Mat_ColOrder))
-  rm(Mat_ColOrder)
-  col.order<-hclust(col.dist)$order
   row.orders = list()
-  for(i in 1:l){
-    if(order_by==0) row.dist <- dist(result$joint[[i]])
-    else row.dist <- dist(result$individual[[i]])
-    row.orders[[i]] <- hclust(row.dist)$order
+  if(order_by==-1){
+  	for(i in 1:l) row.orders[[i]]=c(dim(result$data[[i]])[1]:1)
+  	col.order <- c(1:dim(result$data[[i]])[2])
   }
+  if(order_by>-1){
+  	if(order_by>0) {Mat_ColOrder = result$individual[[order_by]]}
+  	col.dist<-dist(t(Mat_ColOrder))
+  	rm(Mat_ColOrder)
+  	col.order<-hclust(col.dist)$order
+  	for(i in 1:l){
+    	if(order_by==0) {row.dist <- dist(result$joint[[i]])}
+    	else{row.dist <- dist(result$individual[[i]])}
+    	row.orders[[i]] <- hclust(row.dist)$order
+  }}
   
   Image_Joint = list()
   for(i in 1:l){ Image_Joint[[i]] = as.matrix(result$joint[[i]][row.orders[[i]],col.order]) }
@@ -61,6 +66,7 @@ showHeatmaps <- function(result,order_by=0,show_all=TRUE){
     for(i in 1:l){ plot.new();text(1/2,1/2,names(result$data)[[i]],srt=90,cex=CEX*0.75)}
     }
   else{ 
+  	if(order_by==-1) print('Error: must set show_all=TRUE when order_by=-1')
     if(order_by==0){
       layout(matrix(c((l+2):(2*l+2),1:(l+1)),l+1,2),heights=c(1,rep(3,l)),widths=c(1,5))
       layout.show(2+2*l)
@@ -72,7 +78,7 @@ showHeatmaps <- function(result,order_by=0,show_all=TRUE){
     }
     if(order_by>0){
       layout(matrix(c(3,4,1,2),2,2),heights=c(1,5),widths=c(1,5))
-      layout.show(2+l)
+      layout.show(4)
       CEX=textplot("Individual")
       show.image(Image_Indiv[[order_by]])
       textplot(' ')

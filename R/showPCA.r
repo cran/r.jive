@@ -1,4 +1,4 @@
-showPCA <- function(result,n_joint=0,n_indiv=rep(0,length(result$data)),Colors='black'){
+showPCA <- function(result,n_joint=0,n_indiv=rep(0,length(result$data)),Colors='black',pch=1){
   
   old.par <- par(no.readonly = TRUE) # all par settings which could be changed
   on.exit(par(old.par))
@@ -26,7 +26,7 @@ showPCA <- function(result,n_joint=0,n_indiv=rep(0,length(result$data)),Colors='
   for(i in 2:nPCs){
     for(j in 1:(nPCs-1)){
     if(j>=i) plot.new()
-    else plot(PCs[i,],PCs[j,],xlab = PC_names[i],ylab = PC_names[j],col=Colors)
+    else plot(PCs[i,],PCs[j,],xlab = PC_names[i],ylab = PC_names[j],col=Colors,pch=pch)
   }}
 }
 
