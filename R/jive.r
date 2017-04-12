@@ -15,14 +15,24 @@ jive <- function (data, rankJ=1, rankA=rep(1,length(data)), method="perm", dname
 
    # Impute missing values using SVDmiss
    for(i in 1:l) {
-      temp <- SVDmiss(data[[i]], ncomp=ncol(data[[i]]))[[1]]
+      temp <- SVDmiss(data[[i]], ncomp=min(ncol(data[[i]]),nrow(data[[i]])))[[1]]
       data[[i]] <- temp$u %*% diag(x=temp$d) %*% t(temp$v)
    }
 
    # Center and scale individual data sets by frobenius norm
+   centerValues <- list()
+   scaleValues <- c()
    for (i in 1:l) {
-      if (center) {data[[i]] <- data[[i]] - matrix(rep(apply(data[[i]],1,mean,na.rm=T),ncol(data[[i]])),nrow=nrow(data[[i]]))}
-      if (scale) { data[[i]] <- data[[i]] / norm(data[[i]], type="f")*sqrt(sum(n))}
+      if (center) {
+        centerValues[[i]] <- apply(data[[i]],1,mean,na.rm=T) 
+        data[[i]] <- data[[i]] - matrix(rep(centerValues[[i]],ncol(data[[i]])),nrow=nrow(data[[i]]))
+      }
+     if(!center){centerValues[[i]] <- rep(0,d[i])}
+     if (scale){
+       scaleValues[i] <- norm(data[[i]], type="f")*sqrt(sum(n))
+      data[[i]] <- data[[i]] / scaleValues[i] 
+     }
+     if (!scale){scaleValues[i] <- 1}
    }
    
    if(conv=="default"){conv = 10^(-6)*norm(do.call(rbind, data),type="f")}
@@ -109,6 +119,11 @@ jive <- function (data, rankJ=1, rankA=rep(1,length(data)), method="perm", dname
    if (method=="perm") { 
       result$converged <- converged
    }
+   
+   # Add scaling information to output
+   result$scale <- list(center,scale, centerValues, scaleValues)
+   names(result$scale) <- c("Center", "Scale", "Center Values", "Scale Values")
+   
    class(result) <- "jive"
    return(result)
 }

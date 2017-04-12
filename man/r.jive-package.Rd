@@ -12,8 +12,8 @@ Performs the JIVE decompositions on a list of data sets when the data share a di
 \tabular{ll}{
 Package: \tab r.jive\cr
 Type: \tab Package\cr
-Version: \tab 1.7\cr
-Date: \tab 2016-07-18\cr
+Version: \tab 2.1\cr
+Date: \tab 2017-04-11\cr
 License: \tab GPL-3\cr
 }
 
@@ -26,7 +26,7 @@ Maintainer: Michael J. O'Connell <oconn725@umn.edu>
 \references{
 Lock, E. F., Hoadley, K. A., Marron, J. S., & Nobel, A. B. (2013). Joint and individual variation explained (JIVE) for integrated analysis of multiple data types. The Annals of Applied Statistics, 7(1), 523-542.
 
-O'Connell, M. J., & Lock, E.F. (2016). R.JIVE for Exploration of Multi-Source Molecular Data. Bioinformatics advance access: 10.1093/bioinformatics/btw324.}
+O'Connell, M. J., & Lock, E.F. (2016). R.JIVE for Exploration of Multi-Source Molecular Data. Bioinformatics advance access: 32(18):2877-2879, 2016.}
 
 \keyword{ package }
 

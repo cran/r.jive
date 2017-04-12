@@ -89,11 +89,12 @@ Returns an object of class jive.
 \item{method}{a string denoting the rank selection method used.}
 \item{bic.table}{if bic rank selection used, a matrix that shows the BIC values for different ranks.}
 \item{converged}{if permutation rank selection used, a boolean stating whether or not the rank selection converged within the maximum number of iterations.}
+\item{scale}{A list of rour elements: $Center and $Scale are booleans stating whether the data were centered or scaled, respectively, $'Center Values' gives the value subtracted from each row and $'Scale Values' gives the multiplicative scale factor for each source.}
 }
 \references{
 Lock, E. F., Hoadley, K. A., Marron, J. S., & Nobel, A. B. (2013). Joint and individual variation explained (JIVE) for integrated analysis of multiple data types. The Annals of Applied Statistics, 7(1), 523-542.
 
-O'Connell, M. J., & Lock, E.F. (2016). R.JIVE for Exploration of Multi-Source Molecular Data. Bioinformatics advance access: 10.1093/bioinformatics/btw324.
+O'Connell, M. J., & Lock, E.F. (2016). R.JIVE for Exploration of Multi-Source Molecular Data. Bioinformatics, 32(18):2877-2879, 2016.
 
 Jere, S., Dauwels, J., Asif, M. T., Vie, N. M., Cichocki, A., and Jaillet, P. (2014). Extracting commuting patterns in railway networks through matrix decompositions. In 13th IEEE International Conference on Control, Automation, Robotics and Vision (ICARCV), pages 541-546. IEEE.
 }
