@@ -4,7 +4,7 @@
 Display Variance Explained
 }
 \description{
-Creates a bar plot displaying the variance explained from a JIVE decomposition. Shows the percentage of variance attributed to each of joint structure, individual structure, and residual variance. 
+Creates a bar plot displaying the variance explained from a joint and individual variation explained (JIVE) decomposition. Shows the percentage of variance attributed to each of joint structure, individual structure, and residual variance. 
 }
 \usage{
 showVarExplained(result, col = c("grey20", "grey43", "grey65"))

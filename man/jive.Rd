@@ -7,7 +7,7 @@
 JIVE Decomposition for Multi-source Data
 }
 \description{
-Given a list of linked data sets, this algorithm will return low-rank matrices of joint and individual structure. The jive function is a wrapper that centers and scales the data, replaces the missing values using SVDmiss (package SpatioTemporal) if necessary, then proceeds with a specified rank selection method. The jive.iter function performs the JIVE decomposition, given ranks and the processed data set. The functions jive.perm and bic.jive perform rank selection using a permutation test and the Bayesian Information Criterion, respectively. 
+Given a list of linked data sets, this algorithm will return low-rank matrices of joint and individual structure. The jive function is a wrapper that centers and scales the data, replaces the missing values using the SVDmiss function if necessary, then proceeds with a specified rank selection method. The jive.iter function performs the joint and individual variation explained (JIVE) decomposition, given ranks and the processed data set. The functions jive.perm and bic.jive perform rank selection using a permutation test and the Bayesian Information Criterion, respectively. 
 }
 \usage{
 jive(data, rankJ = 1, rankA = rep(1, length(data)), method = "perm",
@@ -106,7 +106,7 @@ Michael J. O'Connell and Eric F. Lock
 \code{\link{summary.jive}}, \code{\link{plot.jive}}
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(10)
 ##Load data that were simulated as in Section 2.4 of Lock et al., 2013,
 ##with rank 1 joint structure, and rank 1 individual structure for each dataset

@@ -3,7 +3,7 @@ export("jive")
 S3method(print,jive)
 S3method(summary,jive)
 S3method(plot,jive)
-import("SpatioTemporal","gplots","abind")
+import("gplots","abind")
 importFrom("graphics", "barplot", "image", "layout", "layout.show",
              "legend", "par", "plot", "plot.new", "text")
 importFrom("stats", "dist", "hclust", "quantile", "sd","runif")

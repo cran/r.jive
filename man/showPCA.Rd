@@ -4,7 +4,7 @@
 Principal Component Plots for JIVE Decomposition
 }
 \description{
-Display principal component plots of the joint and individual structure of a data set after a JIVE decomposition.
+Display principal component plots of the joint and individual structure of a data set after a joint and individual variation explained (JIVE) decomposition.
 }
 \usage{
 showPCA(result, n_joint = 0, n_indiv = rep(0, length(result$data)), 

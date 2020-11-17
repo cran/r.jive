@@ -510,6 +510,62 @@ svdwrapper = function( x, nu, nv, verbose=F ){
   svdtx
 }
 
+#function SVDmiss
+#from R package SpatioTemporal: https://cran.r-project.org/src/contrib/Archive/SpatioTemporal/
+#Authors: Paul D. Sampson and Johan Lindstrom
+SVDmiss <- function(X, niter=25, ncomp=min(4,dim(X)[2]), conv.reldiff=0.001)
+{
+  ##ensure at least one iteration
+  niter <- max(niter,1)
+  ##and ensure sane number of components
+  if( ncomp<1 ){
+    stop("ncomp should be >0, is: ", ncomp)
+  }
+  
+  ##First find missing values
+  Ina <- is.na(X)
+  if( all(!Ina) ){
+    ##if X has no missing data this is simple
+    svd0 <- svd(X)
+    XF <- X
+    i <- diff <- reldiff <- 0
+  }else{
+    ##X has missing data, use iterative method
+    ##Iterative svd calculation with missing data.
+    ##Initial first element of U matrix is average curve.
+    u1 <- rowMeans(X, na.rm = TRUE)
+    XM <- matrix(1, nrow(X), ncol(X))
+    XM[Ina] <- 0
+    XZ <- X
+    # v1 is proportional to X'u1/(u1'u1), but with calculations
+    # filling in zeros for missing values in the sums.
+    XZ[Ina] <- 0.
+    # Fill in missing values for initial complete SVD calculation.
+    # Then iterate  using only complete data.
+    v1 <- diag(t(XZ) %*% (XM * u1))/diag(t(XM * u1) %*% (XM * u1))
+    XF <- X
+    XF[Ina] <- (matrix(u1, ncol = 1) %*% matrix(v1, nrow = 1))[Ina]
+    if( any(is.na(XF)) )
+      stop("Unable to complete matrix, too much missing data")
+    reldiff <- conv.reldiff+1
+    i <- 0
+    while(i<niter && reldiff>conv.reldiff){
+      svd0 <- svd(XF)
+      Xnew <- X
+      Xnew[Ina] <- (svd0$u[, 1:ncomp] %*%
+                      diag(svd0$d[1:ncomp],nrow=length(svd0$d[1:ncomp])) %*%
+                      t(svd0$v[,1:ncomp]))[Ina]
+      diff <- max(abs(Xnew - XF))
+      reldiff <- diff/max(abs(XF[Ina]))
+      XF <- Xnew
+      i <- i+1
+    }
+  }#if( all(!is.na(X)) ) ... else ...
+  final.diff <- c(diff,reldiff,i,niter)
+  names(final.diff) <- c("diff","rel.diff","n.iter","max.iter")
+  return(list(svd=svd0, Xfill=XF, status=final.diff))
+}
+
 
 
 

@@ -4,7 +4,7 @@
 Predict JIVE scores for new data
 }
 \description{
-Computes JIVE scores for new data via iterative least squares, with fixed loadings given by a previous JIVE analysis.
+Computes joint and individual variation explained (JIVE) scores for new data via iterative least squares, with fixed loadings given by a previous JIVE analysis.
 }
 \usage{
 jive.predict(data.new, jive.output)
